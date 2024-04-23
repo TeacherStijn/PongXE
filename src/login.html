@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <!-- Formulier voor inloggen -->
+    <form id="loginFormulier" action="/login" method="POST">
+        <label for="gebruikersnaam">Gebruikersnaam:</label>
+        <input type="text" id="gebruikersnaam" name="gebruikersnaam" required><br><br>
+        <label for="wachtwoord">Wachtwoord:</label>
+        <input type="password" id="wachtwoord" name="wachtwoord" required><br><br>
+        <button type="submit">Inloggen</button>
+    </form>
+
+    <!-- JavaScript om de redirect uit te voeren -->
+    <script>
+        document.getElementById('loginFormulier').addEventListener('submit', function(event) {
+            // Voorkom dat het formulier standaardgedrag uitvoert (de pagina opnieuw laden)
+            event.preventDefault();
+            
+            // Verstuur het formulier naar de server met behulp van fetch
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    gebruikersnaam: document.getElementById('gebruikersnaam').value,
+                    wachtwoord: document.getElementById('wachtwoord').value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Toon het bericht van de server in de console (optioneel)
+                console.log(data.message);
+
+                // Als het inloggen succesvol is, stuur de gebruiker door naar de indexpagina
+                window.location.href = '/index.html';
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

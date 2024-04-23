@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registreren</title>
+</head>
+<body>
+    <h1>Registreren</h1>
+    <!-- Formulier voor registratie -->
+    <form id="registreerFormulier" action="/registreer" method="POST">
+        <label for="gebruikersnaam">Gebruikersnaam:</label>
+        <input type="text" id="gebruikersnaam" name="gebruikersnaam" required><br><br>
+        <label for="wachtwoord">Wachtwoord:</label>
+        <input type="password" id="wachtwoord" name="wachtwoord" required><br><br>
+        <button type="submit">Registreren</button>
+    </form>
+
+    <!-- JavaScript om de redirect uit te voeren -->
+    <script>
+        document.getElementById('registreerFormulier').addEventListener('submit', function(event) {
+            // Voorkom dat het formulier standaardgedrag uitvoert (de pagina opnieuw laden)
+            event.preventDefault();
+            
+            // Verstuur het formulier naar de server met behulp van fetch
+            fetch('/registreer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    gebruikersnaam: document.getElementById('gebruikersnaam').value,
+                    wachtwoord: document.getElementById('wachtwoord').value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Toon het bericht van de server in de console (optioneel)
+                console.log(data.message);
+
+                // Als het registreren succesvol is, stuur de gebruiker door naar de loginpagina
+                window.location.href = '/login.html';
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
